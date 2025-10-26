@@ -44,9 +44,11 @@ export function evaluateScenarioEV(scenario, userAction = "Call") {
 
   const pot = Number(gameState.potSize) || 0;
   const callAmount = Number(currentDecision.amountToCall) || 0;
-  const betSize =
+  const betSizeValue =
     currentDecision.betSize !== undefined ? Number(currentDecision.betSize) : callAmount;
+  const betSize = Number.isFinite(betSizeValue) ? betSizeValue : callAmount;
   const totalPotIfCall = pot + betSize + callAmount;
+  const hasBetToCall = callAmount > 0;
 
   // -----------------------------
   // 1. Assign Opponent Range
@@ -84,14 +86,19 @@ export function evaluateScenarioEV(scenario, userAction = "Call") {
   // 4. EV Calculations
   // -----------------------------
   const winProb = equity / 100;
-  const loseProb = 1 - winProb;
-
   const EV_fold = 0;
-  const EV_call = winProb * (pot + betSize + callAmount) - callAmount;
-  const EV_check = winProb * pot; // simplified
+  const EV_call = winProb * totalPotIfCall - callAmount;
+  const EV_check = winProb * pot;
   const foldEquity = estimateFoldEquity(opponentRange, boardCards);
-  const EV_raise = foldEquity * pot - (1 - foldEquity) * betSize;
-  const EVsRaw = { Fold: EV_fold, Check: EV_check, Call: EV_call, Raise: EV_raise };
+  const assumedRaiseSize = hasBetToCall ? betSize : Math.max(betSize || 0, pot * 0.75 || 1);
+  const EV_raise = foldEquity * (pot + assumedRaiseSize) - (1 - foldEquity) * assumedRaiseSize;
+  const EVsRaw = { Fold: EV_fold };
+  if (hasBetToCall) {
+    EVsRaw.Call = EV_call;
+  } else {
+    EVsRaw.Check = EV_check;
+  }
+  EVsRaw.Raise = EV_raise;
 
   // Determine the optimal action
   const optimalAction = Object.keys(EVsRaw).reduce((a, b) =>
