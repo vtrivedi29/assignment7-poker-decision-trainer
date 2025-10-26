@@ -1,0 +1,460 @@
+.app {
+  min-height: 100vh;
+  background-color: #166534;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.app__container {
+  max-width: 960px;
+  width: 100%;
+  text-align: center;
+}
+
+.app__title {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.app__subtitle {
+  margin: 0.5rem 0 2rem;
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+.app__help-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.app__help-button {
+  border: none;
+  border-radius: 9999px;
+  padding: 0.6rem 1.4rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #166534;
+  background: linear-gradient(135deg, #bbf7d0, #86efac);
+  cursor: pointer;
+  box-shadow: 0 12px 24px -16px rgba(0, 0, 0, 0.45);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.app__help-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 32px -18px rgba(0, 0, 0, 0.5);
+}
+
+.app__help-button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.app__status {
+  margin: 1rem 0;
+  font-size: 1.1rem;
+}
+
+.app__status--error {
+  color: #f87171;
+}
+
+.app__section {
+  margin-top: 2rem;
+}
+
+.app__section-title {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.app__card-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.app__card-image {
+  height: 160px;
+  width: auto;
+  border-radius: 0.5rem;
+  box-shadow:
+    0 12px 20px -10px rgba(0, 0, 0, 0.45),
+    0 6px 10px -6px rgba(0, 0, 0, 0.5);
+  background-color: #0a3d1c;
+  padding: 0.25rem;
+}
+
+.app__card-image--back {
+  object-fit: cover;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.45));
+}
+
+.app__decision-row {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.app__decision-button {
+  flex: 1 1 140px;
+  min-width: 140px;
+  padding: 0.9rem 1.25rem;
+  border: none;
+  border-radius: 0.85rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.app__decision-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -14px rgba(0, 0, 0, 0.7);
+}
+
+.app__decision-button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.app__decision-button--fold {
+  background: linear-gradient(135deg, #b91c1c, #f97316);
+}
+
+.app__decision-button--call {
+  background: linear-gradient(135deg, #2563eb, #38bdf8);
+}
+
+.app__decision-button--raise {
+  background: linear-gradient(135deg, #15803d, #22c55e);
+}
+
+.app__hand-summary {
+  margin-top: 2.5rem;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.app__hand-draw {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+.app__feedback {
+  margin-top: 1.5rem;
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
+  background-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 18px 32px -15px rgba(0, 0, 0, 0.6);
+}
+
+.bg-green-500 {
+  background-color: #22c55e;
+  color: #052e16;
+}
+
+.bg-red-500 {
+  background-color: #ef4444;
+  color: #450a0a;
+}
+
+.app__scenario {
+  margin-top: 2.5rem;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.55);
+  text-align: left;
+  max-width: 540px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.app__scenario-title {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.app__scenario-item {
+  margin: 0.25rem 0;
+  font-size: 1rem;
+}
+
+.app__scenario-label {
+  font-weight: 600;
+}
+
+.app__next-button {
+  margin-top: 1rem;
+  padding: 0.9rem 2.5rem;
+  border: none;
+  border-radius: 9999px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #166534;
+  background: linear-gradient(135deg, #fef9c3, #fde047);
+  box-shadow: 0 20px 40px -18px rgba(0, 0, 0, 0.65);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.app__next-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 24px 44px -20px rgba(0, 0, 0, 0.7);
+}
+
+.app__next-button:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.app__results-screen {
+  margin-top: 3rem;
+  padding: 2rem 1.5rem;
+  border-radius: 1rem;
+  background-color: rgba(15, 118, 110, 0.35);
+  box-shadow: 0 22px 45px -20px rgba(0, 0, 0, 0.7);
+  text-align: center;
+}
+
+.app__results-title {
+  margin: 0 0 1.25rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.app__scenario--results {
+  margin-top: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.app__scenario-meta {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+.app__best-hand {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.95rem;
+}
+
+.app__best-card {
+  padding: 0.3rem 0.55rem;
+  border-radius: 0.5rem;
+  background-color: rgba(15, 23, 42, 0.35);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  letter-spacing: 0.04em;
+}
+
+.app__best-card--hero {
+  background-color: rgba(250, 204, 21, 0.35);
+  box-shadow: 0 0 0 1px rgba(250, 204, 21, 0.65);
+  font-weight: 600;
+}
+
+.app__strategy-rich {
+  margin-top: 1.25rem;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  background-color: rgba(15, 23, 42, 0.5);
+  color: #f8fafc;
+  line-height: 1.6;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  text-align: left;
+}
+
+.app__strategy-paragraph {
+  margin: 0.5rem 0;
+}
+
+.app__strategy-list {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.75rem 0;
+}
+
+.app__strategy-list-item {
+  padding-left: 0.4rem;
+}
+
+.app__math-controls {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.app__math-button {
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.55rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #bfdbfe, #93c5fd);
+  color: #0f172a;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 12px 24px -18px rgba(15, 23, 42, 0.6);
+}
+
+.app__math-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 28px -20px rgba(15, 23, 42, 0.65);
+}
+
+.app__math-button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.app__math-details {
+  margin-top: 1.2rem;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  background-color: rgba(15, 15, 42, 0.55);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  display: grid;
+  gap: 1.25rem;
+}
+
+.app__math-note {
+  margin: 0;
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+.app__math-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
+.app__math-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.6rem;
+  background-color: rgba(15, 23, 42, 0.35);
+}
+
+.app__math-label {
+  font-size: 0.8rem;
+  opacity: 0.75;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.app__math-evlist h4 {
+  margin: 0 0 0.6rem;
+  font-size: 1.05rem;
+  color: #fde68a;
+}
+
+.app__math-evlist ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  line-height: 1.6;
+}
+
+.app__math-evlist li {
+  margin-bottom: 0.25rem;
+}
+
+.app__modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 1000;
+}
+
+.app__modal-content {
+  max-width: 720px;
+  width: 100%;
+  max-height: 90vh;
+  background-color: #0f172a;
+  border-radius: 1rem;
+  box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.75);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.app__modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  background-color: rgba(15, 118, 110, 0.25);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.app__modal-title {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.app__modal-close {
+  border: none;
+  background: transparent;
+  color: #f8fafc;
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.app__modal-close:hover {
+  color: #fcd34d;
+}
+
+.app__modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.app__glossary-section h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+  color: #bbf7d0;
+}
+
+.app__glossary-section ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  line-height: 1.6;
+}
+
+.app__glossary-section li {
+  margin-bottom: 0.35rem;
+}
