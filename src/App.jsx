@@ -1,5 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { analyzeScenario, CARD_BACK_IMAGE as LOGIC_CARD_BACK } from "./evDecisionLogic";
+import {
+  analyzeScenario,
+  CARD_BACK_IMAGE as LOGIC_CARD_BACK,
+  getOutsDetail,
+} from "./utils/evDecisionLogic";
 import "./App.css";
 
 const API_BASE_URL = "https://deckofcardsapi.com/api/deck";
@@ -739,6 +743,105 @@ export default function App() {
     return slots;
   }, [fullBoardCards]);
 
+  const renderOutsDetail = (detail, keyPrefix) => {
+    if (
+      !detail ||
+      typeof detail !== "object" ||
+      !Array.isArray(detail.cards) ||
+      detail.cards.length === 0 ||
+      detail.total <= 0
+    ) {
+      return (
+        <p className="app__outs-empty" key={`${keyPrefix}-outs-empty`}>
+          No clear outs identified beyond overcards.
+        </p>
+      );
+    }
+
+    const categories = [
+      { key: "flush", label: "Flush outs" },
+      { key: "straight", label: "Straight outs" },
+      { key: "rank", label: "Pair / Set outs" },
+    ];
+
+    return categories
+      .map(({ key, label }) => {
+        const cards = detail.categories?.[key] || [];
+        if (!cards.length) return null;
+        return (
+          <div className="app__outs-category" key={`${keyPrefix}-${key}`}>
+            <span className="app__outs-category-label">{label}</span>
+            <div className="app__outs-chips">
+              {cards.map((code) => (
+                <span className="app__out-chip" key={`${keyPrefix}-${key}-${code}`}>
+                  {code}
+                </span>
+              ))}
+            </div>
+          </div>
+        );
+      })
+      .concat([
+        <div className="app__outs-category app__outs-category--all" key={`${keyPrefix}-all`}>
+          <span className="app__outs-category-label">All outs ({detail.total})</span>
+          <div className="app__outs-chips">
+            {detail.cards.map((code) => (
+              <span className="app__out-chip app__out-chip--all" key={`${keyPrefix}-all-${code}`}>
+                {code}
+              </span>
+            ))}
+          </div>
+        </div>,
+      ])
+      .filter(Boolean);
+  };
+
+  const renderEvDetails = (details, keyPrefix) => {
+    if (!Array.isArray(details) || details.length === 0) {
+      return (
+        <p className="app__ev-detail-empty" key={`${keyPrefix}-ev-empty`}>
+          EV breakdown unavailable for this scenario.
+        </p>
+      );
+    }
+
+    return details.map((detail, index) => {
+      const components = Array.isArray(detail.components) ? detail.components : [];
+      return (
+        <div className="app__ev-detail" key={`${keyPrefix}-detail-${detail.action}-${index}`}>
+          <div className="app__ev-detail-header">
+            <span className="app__ev-detail-action">{detail.action}</span>
+            <span className="app__ev-detail-value">
+              {detail.ev >= 0 ? "+" : "-"}${formatDollars(Math.abs(detail.ev))}
+            </span>
+          </div>
+          <p className="app__ev-detail-explanation">{detail.explanation}</p>
+          {components.length > 0 && (
+            <ul className="app__ev-detail-list">
+              {components.map((item, compIndex) => {
+                const key = `${keyPrefix}-${detail.action}-${index}-${compIndex}`;
+                const type = item.type || "raw";
+                let displayValue = item.value;
+                if (type === "percent") {
+                  displayValue = `${formatPercent(item.value)}%`;
+                } else if (type === "dollar") {
+                  displayValue = `$${formatDollars(item.value)}`;
+                }
+                return (
+                  <li className="app__ev-detail-item" key={key}>
+                    <span className="app__ev-detail-label">{item.label}:</span>{" "}
+                    <span className="app__ev-detail-number">{displayValue}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+          {detail.note && <p className="app__ev-detail-note">{detail.note}</p>}
+        </div>
+      );
+    });
+  };
+
   const nextStreetRaw = ROUND_STATES[Math.min(roundIndex + 1, ROUND_STATES.length - 1)];
   const nextStreetLabel = nextStreetRaw.charAt(0).toUpperCase() + nextStreetRaw.slice(1);
 
@@ -838,8 +941,22 @@ export default function App() {
     );
     const totalPotIfCall = potSizeValue + opponentBetValue + amountToCallValue;
     const requiredEquityValue = totalPotIfCall > 0 ? (amountToCallValue / totalPotIfCall) * 100 : 0;
+    const potOddsValue = totalPotIfCall > 0 ? (amountToCallValue / totalPotIfCall) * 100 : 0;
 
     const outsCount = estimateOuts(playerHand, visibleCommunityCards);
+    const boardCodes = visibleCommunityCards.map((card) => card?.code).filter(Boolean);
+    const fallbackOutsDetail =
+      boardCodes.length > 0
+        ? getOutsDetail(heroCardCodes, boardCodes)
+        : {
+            total: outsCount,
+            cards: [],
+            categories: {
+              flush: [],
+              straight: [],
+              rank: [],
+            },
+          };
     const ruleEstimate = computeHeuristicEquity(playerHand, visibleCommunityCards);
     const impliedOddsNeeded = ruleEstimate > 0
       ? Math.max(0, amountToCallValue / Math.max(ruleEstimate / 100, 0.0001) - totalPotIfCall)
@@ -855,6 +972,9 @@ export default function App() {
       foldEquity: 0,
       ruleOf4Equity: ruleEstimate,
       outs: outsCount,
+      outsDetail: fallbackOutsDetail,
+      potOdds: potOddsValue,
+      evDetails: [],
       potSize: potSizeValue,
       opponentBet: opponentBetValue,
       amountToCall: amountToCallValue,
@@ -912,7 +1032,7 @@ export default function App() {
             setStrategyExplanation(fallbackExplanation);
           }
           if (analysis.metrics) {
-            metricsToUse = analysis.metrics;
+            metricsToUse = { ...analysis.metrics };
           }
         } else {
           setStrategyExplanation(fallbackExplanation);
@@ -924,6 +1044,16 @@ export default function App() {
       // eslint-disable-next-line no-console
       console.warn("EV analysis unavailable:", analysisError);
       setStrategyExplanation("EV analysis failed.");
+    }
+
+    if (!metricsToUse.outsDetail) {
+      metricsToUse = { ...metricsToUse, outsDetail: fallbackOutsDetail };
+    }
+    if (!metricsToUse.evDetails) {
+      metricsToUse = { ...metricsToUse, evDetails: [] };
+    }
+    if (metricsToUse.potOdds === undefined || metricsToUse.potOdds === null) {
+      metricsToUse = { ...metricsToUse, potOdds: potOddsValue };
     }
 
     setMathBreakdown(metricsToUse);
@@ -1171,6 +1301,10 @@ export default function App() {
                         <span>{formatPercent(mathBreakdown.requiredEquity)}%</span>
                       </div>
                       <div>
+                        <span className="app__math-label">Pot Odds</span>
+                        <span>{formatPercent(mathBreakdown.potOdds)}%</span>
+                      </div>
+                      <div>
                         <span className="app__math-label">Hero Equity</span>
                         <span>{formatPercent(mathBreakdown.heroEquity)}%</span>
                       </div>
@@ -1219,6 +1353,18 @@ export default function App() {
                           </li>
                         ))}
                       </ul>
+                    </div>
+                    <div className="app__ev-breakdown">
+                      <h4 className="app__ev-breakdown-title">Formula Breakdown</h4>
+                      <div className="app__ev-breakdown-body">
+                        {renderEvDetails(mathBreakdown.evDetails, "results")}
+                      </div>
+                    </div>
+                    <div className="app__outs-wrapper">
+                      <h4 className="app__outs-title">Out Cards</h4>
+                      <div className="app__outs-section">
+                        {renderOutsDetail(mathBreakdown.outsDetail, "results")}
+                      </div>
                     </div>
                   </div>
                 )}
@@ -1359,6 +1505,10 @@ export default function App() {
                         <span>{formatPercent(mathBreakdown.requiredEquity)}%</span>
                       </div>
                       <div>
+                        <span className="app__math-label">Pot Odds</span>
+                        <span>{formatPercent(mathBreakdown.potOdds)}%</span>
+                      </div>
+                      <div>
                         <span className="app__math-label">Hero Equity</span>
                         <span>{formatPercent(mathBreakdown.heroEquity)}%</span>
                       </div>
@@ -1407,6 +1557,18 @@ export default function App() {
                           </li>
                         ))}
                       </ul>
+                    </div>
+                    <div className="app__ev-breakdown">
+                      <h4 className="app__ev-breakdown-title">Formula Breakdown</h4>
+                      <div className="app__ev-breakdown-body">
+                        {renderEvDetails(mathBreakdown.evDetails, "live")}
+                      </div>
+                    </div>
+                    <div className="app__outs-wrapper">
+                      <h4 className="app__outs-title">Out Cards</h4>
+                      <div className="app__outs-section">
+                        {renderOutsDetail(mathBreakdown.outsDetail, "live")}
+                      </div>
                     </div>
                   </div>
                 )}
