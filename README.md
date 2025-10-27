@@ -37,11 +37,11 @@ I used OpenAI Codex (ChatGPT) to help with:
 - **UI polish**: Iterated on component layout and microcopy to keep the math approachable and visually consistent.
 
 ## Screenshots
-![Gameplay Screenshot](src/assets/Screenshot 2025-10-27 at 5.00.00 PM.png?raw=true)
-![Gameplay Screenshot](src/assets/Screenshot 2025-10-27 at 5.00.24 PM.png?raw=true)
-![Gameplay Screenshot](src/assets/Screenshot 2025-10-27 at 5.00.33 PM.png?raw=true)
-![Gameplay Screenshot](src/assets/Screenshot 2025-10-27 at 5.00.45 PM.png?raw=true)
-![Gameplay Screenshot](src/assets/Screenshot 2025-10-27 at 5.00.54 PM.png?raw=true)  
+![Gameplay Screenshot](https://github.com/vtrivedi29/assignment7-poker-decision-trainer/blob/261bddfbf0d3d50066670d38ae42574680263b99/src/assets/Screenshot%202025-10-27%20at%205.00.00%E2%80%AFPM.png)
+![Gameplay Screenshot](https://github.com/vtrivedi29/assignment7-poker-decision-trainer/blob/261bddfbf0d3d50066670d38ae42574680263b99/src/assets/Screenshot%202025-10-27%20at%205.00.24%E2%80%AFPM.png)
+![Gameplay Screenshot](https://github.com/vtrivedi29/assignment7-poker-decision-trainer/blob/261bddfbf0d3d50066670d38ae42574680263b99/src/assets/Screenshot%202025-10-27%20at%205.00.33%E2%80%AFPM.png)
+![Gameplay Screenshot](https://github.com/vtrivedi29/assignment7-poker-decision-trainer/blob/261bddfbf0d3d50066670d38ae42574680263b99/src/assets/Screenshot%202025-10-27%20at%205.00.45%E2%80%AFPM.png)
+![Gameplay Screenshot](https://github.com/vtrivedi29/assignment7-poker-decision-trainer/blob/261bddfbf0d3d50066670d38ae42574680263b99/src/assets/Screenshot%202025-10-27%20at%205.00.54%E2%80%AFPM.png)  
 
 ## Future Improvements
 - Replace heuristic equity estimates with a Monte Carlo simulator for precise odds.
