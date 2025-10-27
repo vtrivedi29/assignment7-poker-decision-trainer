@@ -35,6 +35,7 @@ I used OpenAI Codex (ChatGPT) to help with:
 - **EV breakdown design**: Learned how to articulate pot odds and EV formulas clearly for each action.
 - **Outs enumeration**: Translated poker draw logic into explicit card lists and categorized them flexibly.
 - **UI polish**: Iterated on component layout and microcopy to keep the math approachable and visually consistent.
+I also used Google Gemini to write a prompt for Codex. The prompt was used to give Codex context to poker strategy based on EV specifically.
 
 ## Screenshots
 ![Gameplay Screenshot](https://github.com/vtrivedi29/assignment7-poker-decision-trainer/blob/261bddfbf0d3d50066670d38ae42574680263b99/src/assets/Screenshot%202025-10-27%20at%205.00.00%E2%80%AFPM.png)
