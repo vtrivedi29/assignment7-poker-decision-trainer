@@ -37,8 +37,11 @@ I used OpenAI Codex (ChatGPT) to help with:
 - **UI polish**: Iterated on component layout and microcopy to keep the math approachable and visually consistent.
 
 ## Screenshots
-![Gameplay Screenshot](./public/screenshot.png)  
-*(Replace with an actual capture showing the EV panel and outs breakdown.)*
+![Gameplay Screenshot](src/assets/Screenshot 2025-10-27 at 5.00.00 PM.png?raw=true)
+![Gameplay Screenshot](src/assets/Screenshot 2025-10-27 at 5.00.24 PM.png?raw=true)
+![Gameplay Screenshot](src/assets/Screenshot 2025-10-27 at 5.00.33 PM.png?raw=true)
+![Gameplay Screenshot](src/assets/Screenshot 2025-10-27 at 5.00.45 PM.png?raw=true)
+![Gameplay Screenshot](src/assets/Screenshot 2025-10-27 at 5.00.54 PM.png?raw=true)  
 
 ## Future Improvements
 - Replace heuristic equity estimates with a Monte Carlo simulator for precise odds.
